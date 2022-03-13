@@ -1,3 +1,4 @@
+drop table STSMST;
 --회원
 create table mmMst(
     mmId    VARCHAR2(50),
@@ -7,7 +8,7 @@ create table mmMst(
     llDate  date not null,
     stsCd   number not null,
     outDate date,
-    outRsn  VARCHAR2(50),
+    outCds  VARCHAR2(30),
     CONSTRAINT mmMst_pk PRIMARY KEY (mmId),
     CONSTRAINT stsCd_fk FOREIGN KEY(stsCd)
     REFERENCES stsMst(stsCd)
@@ -18,6 +19,13 @@ create table stsMst(
     stsNm   VARCHAR2(50) not null,
     CONSTRAINT stsMst_pk PRIMARY KEY (stsCd)
 );
+
+create table stsDel(
+    outCd   number(2),
+    outRsn varchar2(50),
+    CONSTRAINT stsDel_pk PRIMARY KEY (outCd)
+);
+
 -- 리뷰
 create table rvDtl(
     rvNo    VARCHAR2(50),
@@ -26,11 +34,19 @@ create table rvDtl(
     mmId    VARCHAR2(50) not null,
     rgtDate date not null,
     delDate date,
-    delRsn  VARCHAR2(50),
+    delCds  VARCHAR2(50),
     CONSTRAINT rvDtl_pk PRIMARY KEY(rvNo),
     CONSTRAINT rvNo_fk FOREIGN KEY(mmId)
     REFERENCES mmMst(mmId)
 );
+
+--리뷰삭제 이유
+create table rvDel(
+    outCd   number(2),
+    outRsn varchar2(50),
+    CONSTRAINT rvDel_pk PRIMARY KEY (outCd)
+);
+
 -- 리뷰 사진
 create table rvPic(
     rvNo    VARCHAR2(50),
@@ -57,9 +73,8 @@ create table rvRgt(
     fvNo    number(50) not null,
     CONSTRAINT rvRgt_pk PRIMARY KEY (rvNo),
     CONSTRAINT mmId_fk FOREIGN KEY(mmId)
-    REFERENCES fvLk(mmId)
+    REFERENCES rvDtl(rvNo)
 ); 
-
 
 
 -- 이벤트 응모
