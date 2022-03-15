@@ -1,10 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <style>
+.why{
+	
+	width : 200px;
+	height : 100px;
+    margin-left:auto; 
+    margin-right:auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+}
 .password{
 	text-align: center;
     margin-left:auto; 
@@ -19,11 +30,9 @@
 	display: none;
 	background-color: rgba(0, 0, 0, 0.4);
 }
-
 .modal.show {
 	display: block;
 }
-
 .modal_body {
 	position: absolute;
 	top: 50%;
@@ -59,11 +68,18 @@
 <input type="button" class="btn-open-popup" value="탈퇴하기" ></p>
 	<div class="modal">
 		<div class="modal_body">
+			<table class="why">
 			<form action="" >
-				정말 탈퇴 하시겠습니까? <br />
-			<input type="button" value="취소" />	
-			<input type="submit" value="탈퇴" />
+				<tr>
+					<td colspan="2">정말 탈퇴 하시겠습니까?</td>
+				</tr>
+				<tr>
+				<td><input type="button" class="btn-close-popup" value="취소" /></td>	
+				<td><input type="submit" value="탈퇴" /></td>
+				</tr>
 			</form>
+			</table>
+			
 		</div>
 
 	</div>
@@ -73,24 +89,29 @@
       const body = document.querySelector('body');
       const modal = document.querySelector('.modal');
       const btnOpenPopup = document.querySelector('.btn-open-popup');
-
+      const btnClosePopup = document.querySelector('.btn-close-popup');
       btnOpenPopup.addEventListener('click', () => {
         modal.classList.toggle('show');
-
         if (modal.classList.contains('show')) {
           body.style.overflow = 'hidden';
         }
       });
-
       modal.addEventListener('click', (event) => {
         if (event.target === modal) {
           modal.classList.toggle('show');
-
           if (!modal.classList.contains('show')) {
             body.style.overflow = 'auto';
           }
         }
       });
+      btnClosePopup.addEventListener('click', (event) => {
+          if (event.target === modal) {
+              modal.classList.toggle('show');
+              if (!modal.classList.contains('show')) {
+                body.style.overflow = 'auto';
+              }
+            }
+          });
     </script>
 
 
