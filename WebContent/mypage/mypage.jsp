@@ -35,10 +35,10 @@
 </tr>
 	<tr>
 		<td>내 리뷰 관리</td>
-		<td class="more">더 보기</td>
+		<td class="more"><a href="./review.jsp">더 보기</a></td>
 		<td> &nbsp;&nbsp;&nbsp; </td>
 		<td>내 찜 관리</td>
-		<td class="more">더보기</td>
+		<td class="more"><a href="./zzim.jsp">더보기</a></td>
 	</tr>
 	<tr>
 	<td colspan=2 class="box">리뷰 박스</td>
