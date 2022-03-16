@@ -36,8 +36,8 @@ body{
         <div id="" class="">
             <ul class="inlineUl rigthUl">
               <li>로그아웃</li>
-              <li><a href="mypage.jsp">마이페이지</a></li>
-              <li><a href="./admin/adminPage.jsp">관리자페이지</a></li>
+              <li><a href="${pageContext.request.contextPath}/mypage/mypage.jsp">마이페이지</a></li>
+              <li><a href="${pageContext.request.contextPath}/admin/adminPage.jsp">관리자페이지</a></li>
             </ul>
         </div>
         <div id="" class="siteName">
