@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<c:import url="header.jsp"></c:import>
+<c:import url="/header.jsp"></c:import>
 <style>
 .number {
 	width: 30px;
@@ -66,5 +66,5 @@ table {
 	
 	</table>
 </body>
-<footer><c:import url="footer.jsp"></c:import></footer>
+<footer><c:import url="/footer.jsp"></c:import></footer>
 </html>

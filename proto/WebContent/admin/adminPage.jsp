@@ -228,7 +228,7 @@ ul li {
 					<c:forEach var="serchNumber" items="<%=currentReviewList %>" varStatus="status">
 					<div class="reviewC">
 						<div>
-							<img class="leftUl" src="https://via.placeholder.com/150x150" alt="280" >		
+							<img class="leftUl" src="https://via.placeholder.com/150x150" alt="280" >
 						</div>
 						<div class="textleft">
 							<div class=" leftUl www">작성자 : ${serchNumber.getName()}</div>
