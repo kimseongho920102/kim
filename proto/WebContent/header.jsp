@@ -8,10 +8,10 @@
 <title>Insert title here</title>
 </head>
 <style>
-body{
-	width: 980px;
-	margin: 0 auto;
-}
+	body{
+		width: 980px;
+		margin: 0 auto;
+	}
 	header{
 	  display: grid;
 	  grid-template-rows: auto;

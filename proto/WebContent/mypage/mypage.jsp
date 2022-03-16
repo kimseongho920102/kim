@@ -30,7 +30,7 @@
 
 <table class="table">
 <tr>
-<td>iLoveDodari 님 . <button><a href="passwordChk.jsp">내 정보 수정</a></button></td>
+<td>iLoveDodari 님 . <button><a href="./passwordChk.jsp">내 정보 수정</a></button></td>
 
 </tr>
 	<tr>
