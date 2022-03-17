@@ -11,7 +11,7 @@
 <title>Header</title>
 </head>
 <%
-	request.setCharacterEncoding("utf-8");
+
 	List<TestVO> nameList = new ArrayList<TestVO>();
 	for(int i=0; i<10; i++){
 		TestVO test1 = new TestVO("test1", "email1");

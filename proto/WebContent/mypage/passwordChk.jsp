@@ -34,25 +34,6 @@
 	align-items: center;
 	border-radius: 10px red;
 }
-
-
-.modal .bg {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modalBox {
-	position: absolute;
-	top: 20%;
-	background-color: #fff;
-	width: 400px;
-	height: 200px;
-	padding: 15px;
-	background-color: #9CC3D5;
-	border-radius: 40px / 40px;
-}
-
 .hidden {
 	display: none;
 }
@@ -78,41 +59,12 @@
 				class="openBtn right" value="탈퇴하기">
 		</p>
 		<div class="modal hidden">
-			<div class="bg"></div>
-			<div class="modalBox">
-				<table class="check">
-					<form action="">
-						<tr>
-							<td colspan="2">정말 탈퇴 하시겠습니까?</td>
-						</tr>
-						<tr>
-							<td><input type="button" class="closeBtn" value="취소" /></td>
-							<td><input type="submit" value="탈퇴" /></td>
-						</tr>
-					</form>
-				</table>
-
-			</div>
-
+				<c:import url="${pageContext.request.contextPath}/modal/modalCheck.jsp">
+					<c:param name="message" value="정말?"></c:param>
+				</c:import>
 		</div>
-		<c:import url="test.jsp"></c:import>
 	</form>
-	<script>
-	const open = () => {
-	    document.querySelector(".modal").classList.remove("hidden");
-	    
-	  }
-
-	  const close = () => {
-	    document.querySelector(".modal").classList.add("hidden");
-	  }
-
-	  document.querySelector(".openBtn").addEventListener("click", open);
-	  document.querySelector(".closeBtn").addEventListener("click", close);
-	  document.querySelector(".bg").addEventListener("click", close);
-
-</script>
-
+	
 
 </body>
 <footer>
