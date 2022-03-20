@@ -11,50 +11,61 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>관리자페이지</title>
+<link rel="stylesheet" href="/css/commonCss.css">
+<link rel="stylesheet" href="/css/board.css">
 </head>
 <%
 	request.setCharacterEncoding("utf-8");
 
 List<TestVO> nameList = (List<TestVO>) session.getAttribute("nameList");
+int one_page_memeberSize = 10;
+int one_page_memberNumbers = 5;
+int total_member_page = (int)Math.ceil(nameList.size()/(double)one_page_memeberSize);
+
+//페이지 읽어오기
 int currentPage = 1;
 try {
 	currentPage = Integer.parseInt(request.getParameter("page"));
 	if (currentPage <= 0)
 		currentPage = 1;
-} catch (Exception e) {
-}
-int startNumber = (currentPage - 1) * 4;
-int endNumber = currentPage * 4 - 1;
+} catch (Exception e) {}
+
+//한 페이지에 나올 맴버들 추출(0~9 / 10~19 / 20~29)
+int startNumber = (currentPage - 1) * one_page_memeberSize;
+int endNumber = currentPage * one_page_memeberSize - 1;
 if (endNumber > nameList.size() - 1)
 	endNumber = nameList.size() - 1;
-
 List<TestVO> currentList = new ArrayList<TestVO>();
 for (int i = startNumber; i <= endNumber; i++) {
 	currentList.add(nameList.get(i));
 }
 
-int pageNumbers = (Integer) session.getAttribute("pageNumbers");
-int currentPageNumbers = ((currentPage - 1) / 5) + 1;
+//이 페이지의 하단 페이징 출력하기(1~5 / 6~10 / 11~15)
+int current_paging = ((currentPage - 1) / one_page_memberNumbers) + 1;
 
-int startPage = (currentPageNumbers * 5) - 4;
-int endPage = currentPageNumbers * 5;
-if (endPage > pageNumbers)
-	endPage = pageNumbers;
+int startPage = (current_paging * one_page_memberNumbers) - 4;
+int endPage = current_paging * one_page_memberNumbers;
+if (endPage > total_member_page)
+	endPage = total_member_page;
 
 
 //리뷰
-
 List<TestVO> reviewList = (List<TestVO>) session.getAttribute("nameList");
+int one_page_reviewSize = 3;
+int one_page_reviewNumbers = 5;
+int total_review_page = (int)Math.ceil(reviewList.size()/(double)one_page_reviewSize);
+
+//페이지 읽어오기
 int currentReviewPage = 1;
 try {
 	currentReviewPage = Integer.parseInt(request.getParameter("page"));
 	if (currentReviewPage <= 0)
 		currentReviewPage = 1;
-} catch (Exception e) {
-}
+} catch (Exception e) {}
 
-int reviewStartNumber = (currentReviewPage - 1) * 3;
-int reviewEndNumber = currentReviewPage * 3 - 1;
+//한 페이지에 나올 리뷰 추출
+int reviewStartNumber = (currentReviewPage - 1) * one_page_reviewSize;
+int reviewEndNumber = currentReviewPage * one_page_reviewSize - 1;
 if (reviewEndNumber > reviewList.size() - 1)
 	reviewEndNumber = reviewList.size() - 1;
 List<TestVO> currentReviewList = new ArrayList<TestVO>();
@@ -62,46 +73,75 @@ for (int i = reviewStartNumber; i <= reviewEndNumber; i++) {
 	currentReviewList.add(reviewList.get(i));
 }
 
-int currentReviewPageNumbers = ((currentPage - 1) / 5) + 1;
-int startReviewPage = (currentPageNumbers * 5) - 4;
-int endReviewPage = currentPageNumbers * 5;
-if (endReviewPage > pageNumbers)
-	endReviewPage = pageNumbers;
+//이 페이지의 하단 페이징 출력하기(1~5 / 6~10 / 11~15)
+int review_current_paging = ((currentReviewPage - 1) / one_page_reviewNumbers) + 1;
 
-
+int startReviewPage = (review_current_paging * one_page_reviewNumbers) - 4;
+int endReviewPage = review_current_paging * one_page_reviewNumbers;
+if (endReviewPage > total_review_page)
+	endReviewPage = total_review_page;
 %>
 <style>
-table {
-	width: 800px;
-	border-collapse: collapse;
+.em {
+	width: 600px;
 }
 
-.memeberT th, td {
-	border-bottom: 1px solid #444444;
+.image {
+	border: 2px solid black;
+	width: 200px;
 }
 
-table button {
-	float: right;
+.right {
+	text-align: right;
+}
+
+td, th{
+	text-align: left;
+
+}
+
+.leftUl{
+  float: left;
+  padding: 10px;
 }
 
 .container {
-	width: 800px;
 	margin: 20px auto;
 }
 
+.tab_title {
+	
+	width:  100%;
+}
+
 .tab_title li {
-	list-style: none;
+	/* list-style: none;
 	float: left;
 	width: 100px;
 	padding: 10px 15px;
 	cursor: pointer;
 	text-align: center;
-	border: 1px solid #bebebe;
+	border: 1px solid #bebebe; */	
+	text-align: center;
+	position: relative;
+    height : 3em;
+    border: 1px ;
+    width : 49%;
+    display: inline-block;
+    border-radius: 5px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    cursor: pointer;
+    font-weight: bold;
+	color: var(--darker-color);
 }
 
 .tab_title li.on {
-	background-color: #ffb715;
-	font-weight: bold;
+	background-color: var(--primary-color);
+	color: var(--white-color);
 }
 
 .tab_cont {
@@ -109,7 +149,7 @@ table button {
 	height: 250px;
 }
 
-.tab_cont > div {
+.tab_cont>div {
 	display: none;
 	text-align: center;
 }
@@ -118,15 +158,24 @@ table button {
 	display: block;
 }
 
+.memeberT {
+	margin: 0 auto;
+}
+
+.reviewCon {
+	float: left;
+}
+
 .pagination {
 	margin: 0 auto;
 }
-.pagination ul{
-	display:inline-block;
-	
+
+.pagination ul {
+	display: inline-block;
 }
-.pagination ul li{
-	float:left;
+
+.pagination ul li {
+	float: left;
 }
 
 ul li {
@@ -134,158 +183,182 @@ ul li {
 	display: inline;
 	margin-left: 5px;
 }
-
-.leftUl{
-  float: left;
-  padding: 10px;
-}
-.rightUl{
-  float: right;
-  padding: 5px;
-  height: 30px;
-  width: 50px;
-  position: relative;
-}
-.textleft> div{
-	text-align: left;
-}
-.reviewCon{
-	padding: 10px;
-}
-.reviewCon img{
-	float: left;
-}
-.www{
-	width: 350px;
-	height: 20px;
-}
-.sss{
-	width: 200px;
-	height: 20px;
-}
-.ttt{
-	width: 550px;
-	height: 20px;
-}
-.tttt{
-	width: 550px;
-	word-wrap:break-word;
-}
-.reviewC{
-	float: left;
-	border:1px solid red; 
+.memeberT{
+	border-collapse: collapse;
 }
 
-
+.modal {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-radius: 10px red;
+}
+.modalBox {
+   position: absolute;
+   top: 30%;
+   background-color: #fff;
+   width: 400px;
+   height: 200px;
+   padding: 15px;
+}
+.modal .bg {
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.6);
+}
+.hidden {
+   display: none;
+}
 </style>
 
 <body>
-	<c:import url="/header.jsp"></c:import>
+<c:import url="/header.jsp"></c:import>
 
-	<div class="container">
-		<ul class="tab_title">
-			<li class="on" >회원 조회</li>
-			<li >리뷰 조회</li>
-		</ul>
-		<div class="tab_cont">
-			<div class="on">
-				<input type="text" name="serch"> <input type="submit"
-					value="검색"> <br>
-				<table class="memeberT">
-					<th>아이디</th>
-					<th>이메일</th>
-					<br>
-
-					<c:forEach var="serchNumber" items="<%=currentList%>"
-						varStatus="status">
-						<tr>
-							<td>${serchNumber.getName()}</td>
-							<td>${serchNumber.getEmail()}<button>삭제</button></td>
-						</tr>
-					</c:forEach>
-				</table>
-				<ul class="pagination">
-					<li class="disabled"><c:if test="<%=!(startPage == 1)%>">
-							<a href="adminPage.jsp?page=<%=startPage - 1%>">
-						</c:if> <span>«</span></a></li>
-					<c:forEach var="i" begin="<%=startPage%>" end="<%=endPage%>">
-						<c:if test="${i == 1}">
-							<li class="active"><a href="adminPage.jsp?page=1">1</a></li>
-						</c:if>
-						<c:if test="${i > 1}">
-							<li><a href="adminPage.jsp?page=${i}">${i}</a></li>
-						</c:if>
-					</c:forEach>
-					<li><c:if test="<%=pageNumbers > endPage%>">
-							<a href="adminPage.jsp?page=<%=endPage + 1%>">
-						</c:if> <span>»</span></a></li>
-				</ul>
-			</div>
-
-			<div>
-				<input type="text" name="serch"> <input type="submit"	value="검색"> <br>
-				<div class="reviewCon">
-					<c:forEach var="serchNumber" items="<%=currentReviewList %>" varStatus="status">
-					<div class="reviewC">
-						<div>
-							<img class="leftUl" src="https://via.placeholder.com/150x150" alt="280" >
-						</div>
-						<div class="textleft">
-							<div class=" leftUl www">작성자 : ${serchNumber.getName()}</div>
-							<div class=" leftUl sss">작성시간 :</div>
-							<div class=" leftUl ttt">제목 : ${serchNumber.getEmail()}</div>
-							<div class=" leftUl tttt">내용  11111111112333333333333333333333333333333333333333333333333333333333333333333333331112222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</div>							
-							<button class="rightUl">삭제</button>
-						</div>													
-					</div>		
-				</c:forEach>	
-				</div>
-					<div class="pagination">
-						<ul>
-						<li class="disabled"><c:if test="<%=!(startReviewPage == 1)%>">
-								<a href="adminPage.jsp?page=<%=startReviewPage - 1%>">
-							</c:if> <span>«</span></a></li>
-						<c:forEach var="i" begin="<%=startPage%>" end="<%=endReviewPage%>">
-							<c:if test="${i == 1}">
-								<li class="active"><a href="adminPage.jsp?page=1">1</a></li>
-							</c:if>
-							<c:if test="${i > 1}">
-								<li><a href="adminPage.jsp?page=${i}">${i}</a></li>
-							</c:if>
-						</c:forEach>
-						<li><c:if test="<%=pageNumbers > endReviewPage%>">
-								<a href="adminPage.jsp?page=<%=endReviewPage + 1%>">
-							</c:if> <span>»</span></a></li>
-					</ul>
+<div class="container">
+	<ul class="tab_title">
+		<li class="on">회원 조회</li>
+		<li>리뷰 조회</li>
+	</ul>
+	<!-- <button class="btn-tab selected_tab">회원조회</button>
+	<button class="btn-tab ">리뷰조회</button> -->
+	<div class="tab_cont">
+		<div class="on">
+			<form action="" onsubmit="test()">
+				<input type="text" name="serch"> 
+				<input type="submit" value="검색"><br>
+			</form>
+			<table width="90%" class="memeberT" >
+				<tr>
+					<th width="45%">아이디</th>
+					<th width="45%">이메일</th>
+					<th width="10%"></th>
+				</tr>
+				<c:forEach var="serchNumber" items="<%=currentList%>" varStatus="status">
+					<tr>
+						<td style="border-bottom: 1px solid black;">${serchNumber.getName()}</td>
+						<td style="border-bottom: 1px solid black;">${serchNumber.getEmail()}</td>
+						<td class="openBtn" style="border-bottom: 1px solid black;"><button onclick="openModal()">삭제</button></td>
+					</tr>						
+				</c:forEach>
+			</table>
+			<ul class="pagination">
+				<c:set var="current_page" value="<%=currentPage %>" />
+				<li class="disabled">
+					<c:if test="<%=!(startPage == 1)%>"><a href="adminPage.jsp?page=<%=startPage - 1%>"></c:if> 
+					<span>«</span></a>
+				</li>
+				<c:forEach var="i" begin="<%=startPage%>" end="<%=endPage%>">
+					<li><c:if test="${i != current_page}"><a href="adminPage.jsp?page=${i}"></c:if>${i}</a></li>					
+				</c:forEach>
+				<li>
+					<c:if test="<%=total_member_page > endPage%>"><a href="adminPage.jsp?page=<%=endPage + 1%>"></c:if>
+					<span>»</span></a>
+				</li>
+			</ul>
+			<div class="modal hidden">
+				<div class="bg"></div>
+				<div class="modalBox">
+					<c:import url="adminModal.jsp"></c:import>
 				</div>
 			</div>
 		</div>
+
+		<div>
+			<input type="text" name="serch"> <input type="submit" value="검색"> <br>
+			<div class="reviewCon">
+				<c:forEach var="serchNumber" items="<%=currentReviewList%>" varStatus="status">
+					<table>
+						<tr>
+							<td class="image" rowspan="4">이미지</td>
+							<td>작성자 : ${serchNumber.name}</td>
+							<td>작성일시 : 2022-01-24</td>
+						</tr>
+						<tr>
+							<td colspan="5">제목 : ${serchNumber.email}</td>
+						</tr>
+						<tr>
+							<td colspan="5">가야 할 때가 언제인가를 분명히 알고 가는 이의 뒷모습은 얼마나 아름다운가.
+								봄 한 철 격정을 인내한 나의 사랑은 지고 있다. 분분한 낙화. 결별이 이룩하는 축복에 싸여 지금은 가야 할 때
+								무성한 녹음과 그리고 머지않아 열매 맺는 가을을 향하여 나의 청춘은 꽃답게 죽는다. 헤어지자 섬세한 손길을 흔들며
+								하롱하롱 꽃잎이 지는 어느 날 나의 사랑, 나의 결별 샘터에 물 고이듯 성숙하는 내 영혼의 슬픈 눈.</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td class="right"><button>리뷰 삭제</button></td>
+						</tr>
+					</table>
+					<hr />
+				</c:forEach>
+			</div>
+			<div class="pagination">
+				<c:set var="current_reviewPage" value="<%=currentReviewPage %>" />
+				<ul>
+					<li class="disabled"><c:if
+							test="<%=!(startReviewPage == 1)%>">
+							<a href="adminPage.jsp?page=<%=startReviewPage - 1%>">
+						</c:if> <span>«</span></a></li>
+					<c:forEach var="i" begin="<%=startPage%>" end="<%=endReviewPage%>">
+						<li><c:if test="${i != current_reviewPage}"><a href="adminPage.jsp?page=${i}"></c:if>${i}</a></li>		
+					</c:forEach>
+					<li><c:if test="<%=total_review_page > endReviewPage%>">
+							<a href="adminPage.jsp?page=<%=endReviewPage + 1%>">
+						</c:if> <span>»</span></a></li>	
+				</ul>
+			</div>
+			<div class="modal hidden">
+				<div class="bg"></div>
+				<div class="modalBox">
+					<c:import url="adminModal.jsp"></c:import>
+				</div>
+			</div>
+		</div>
+		<c:import url="/footer.jsp"></c:import>
 	</div>
-	
-	<c:import url="/footer.jsp"></c:import>
-	<script>
-		 $(document).ready(function() {
-			var tab = sessionStorage.getItem('tabSelect');
-			$(".tab_title li").removeClass("on");
-			$(".tab_title li").eq(tab).addClass("on");
-			$(".tab_cont > div").hide();
-			$(".tab_cont > div").eq(tab).show();
-	    });
+</div>
 
 		
-		$(document).ready(function() {						
-			$(".tab_title li").click(function() {
-				var idx = $(this).index();
-				location.href="adminPage.jsp?page=1";
 
-				$(".tab_title li").removeClass("on");
-				$(".tab_title li").eq(idx).addClass("on");
-				$(".tab_cont > div").hide();
-				$(".tab_cont > div").eq(idx).show();
-				sessionStorage.setItem('tabSelect', idx);
-			})
-		});
+<script>
+
+$(document).ready(function() {
+	var tab = sessionStorage.getItem('tabSelect');
+	$(".tab_title li").removeClass("on");
+	$(".tab_title li").eq(tab).addClass("on");
+	$(".tab_cont > div").hide();
+	$(".tab_cont > div").eq(tab).show();
+});
+
+$(document).ready(function() {
+	$(".tab_title li").click(function() {
+		var idx = $(this).index();
+		location.href = "adminPage.jsp?page=1";
 		
-	</script>
+		$(".tab_title li").removeClass("on");
+		$(".tab_title li").eq(idx).addClass("on");
+		$(".tab_cont > div").hide();
+		$(".tab_cont > div").eq(idx).show();
+		sessionStorage.setItem('tabSelect', idx);
+	})
+});
+
+function openModal() {
+	document.querySelector(".modal").classList.remove("hidden");
+}
+function closeModal() {
+	document.querySelector(".modal").classList.add("hidden");
+}
+
+document.querySelector(".bg").addEventListener("click", closeModal);
+		
+function test(e) {
+	console.log(e.serch);
+}
+		
+</script>
 </body>
 </html>

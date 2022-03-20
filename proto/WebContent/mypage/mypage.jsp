@@ -22,6 +22,7 @@
 
 </style>
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/commonCss.css">
 <c:import url="/header.jsp"></c:import>
 </head>
 	

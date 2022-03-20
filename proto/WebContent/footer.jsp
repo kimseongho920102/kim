@@ -8,14 +8,14 @@
 <title>Insert title here</title>
 </head>
 <style>
-
 footer{
-  clear: both;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
 }
-
 </style>
-
 <body>
 	<footer><hr>김씨는 3명인데 박씨는 1명</footer>
+	<br>
 </body>
 </html>

@@ -6,31 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/commonCss.css">
 </head>
-<style>
-	body{
-		width: 980px;
-		margin: 0 auto;
-	}
-	header{
-	  display: grid;
-	  grid-template-rows: auto;
-	}
-	.inlineUl li{
-	  list-style-type: none;
-	  display: inline-block;
-	  box-sizing: border-box;
-	  width: 100px;
-	}
-	.rigthUl{
-	  float: right;
-	}
-	.siteName{
-		font-size: 50px;
-	    text-align: center;
-	    padding-bottom : 30px;
-	}
-</style>
+
 <body>
 <header>
         <div id="" class="">
@@ -45,8 +23,9 @@
         </div>
     </header>
     <nav>
-        <ul class="inlineUl"><li>전국의 행사</li>
-        <li>이벤트</li></ul><hr>
+        <ul class="inlineUl">
+        <li><a href="" id="a_header_fv">전국의 행사</a></li>
+        <li><a href="" id="a_header_ev">이벤트</a></li></ul><hr>
     </nav>
 </body>
 </html>
